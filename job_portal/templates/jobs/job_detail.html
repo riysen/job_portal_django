@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2>{{ job.title }}</h2>
+                <h4 class="text-muted">{{ job.company_name }}</h4>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Posted:</strong> {{ job.created_at|date:"F d, Y" }}</p>
+                <p><strong>Posted by:</strong> {{ job.posted_by.first_name }} {{ job.posted_by.last_name }}</p>
+                
+                <hr>
+                <h5>Job Description:</h5>
+                <p>{{ job.description|linebreaks }}</p>
+                
+                <!-- Application Logic -->
+                {% if user.is_authenticated %}
+                    {% if is_job_owner %}
+                        <!-- If user is the job owner -->
+                        <div class="alert alert-info">
+                            <strong>This is your job posting.</strong>
+                            <a href="{% url 'job_applications' job.pk %}" class="btn btn-primary ms-2">
+                                View Applications ({{ job.applications.count }})
+                            </a>
+                        </div>
+                    {% elif can_apply %}
+                        <!-- If user can apply -->
+                        <a href="{% url 'apply_job' job.pk %}" class="btn btn-success">
+                            Apply for this Job
+                        </a>
+                    {% elif user_applied %}
+                        <!-- If user already applied -->
+                        <div class="alert alert-success">
+                            <strong>✅ You have already applied for this job.</strong>
+                        </div>
+                    {% elif user.userprofile.user_type == 'employer' %}
+                        <!-- If user is employer but not job owner -->
+                        <div class="alert alert-warning">
+                            Only applicants can apply for jobs. You are registered as an employer.
+                        </div>
+                    {% else %}
+                        <!-- Other cases -->
+                        <div class="alert alert-info">
+                            You cannot apply for this job at the moment.
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <!-- If user is not logged in -->
+                    <div class="alert alert-info">
+                        <a href="{% url 'login' %}">Login</a> as an applicant to apply for this job.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Job Summary</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Company:</strong> {{ job.company_name }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Posted:</strong> {{ job.created_at|date:"M d, Y" }}</p>
+                <p><strong>Applications:</strong> {{ job.applications.count }}</p>
+                
+                {% if is_job_owner %}
+                    <hr>
+                    <h6>Job Owner Actions:</h6>
+                    <a href="{% url 'job_applications' job.pk %}" class="btn btn-sm btn-outline-primary">
+                        View Applications
+                    </a>
+                    <a href="{% url 'my_jobs' %}" class="btn btn-sm btn-outline-secondary">
+                        My Jobs
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

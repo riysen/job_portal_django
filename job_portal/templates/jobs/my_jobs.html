@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>My Posted Jobs</h2>
+            <a href="{% url 'post_job' %}" class="btn btn-primary">Post New Job</a>
+        </div>
+
+        {% if jobs %}
+            <div class="row">
+                {% for job in jobs %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ job.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ job.company_name }}</h6>
+                                <p class="card-text">
+                                    <i class="fas fa-map-marker-alt"></i> {{ job.location }}<br>
+                                    {{ job.description|truncatewords:15 }}
+                                </p>
+                                <p class="text-muted small">
+                                    Posted: {{ job.created_at|date:"M d, Y" }} | 
+                                    Applications: {{ job.applications.count }}
+                                </p>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'job_detail' job.pk %}" class="btn btn-outline-primary btn-sm">View</a>
+                                    <a href="{% url 'job_applications' job.pk %}" class="btn btn-outline-success btn-sm">
+                                        Applications ({{ job.applications.count }})
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h4>No Jobs Posted Yet</h4>
+                <p>You haven't posted any jobs yet. <a href="{% url 'post_job' %}">Post your first job</a> to get started!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

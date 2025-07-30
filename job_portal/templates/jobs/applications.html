@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Applications for: {{ job.title }}</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>{{ job.title }} at {{ job.company_name }}</h5>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Posted:</strong> {{ job.created_at|date:"F d, Y" }}</p>
+                <a href="{% url 'job_detail' job.pk %}" class="btn btn-outline-primary">View Job Details</a>
+            </div>
+        </div>
+
+        <h3>Applications Received ({{ applications.count }})</h3>
+        
+        {% if applications %}
+            <div class="row">
+                {% for application in applications %}
+                    <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5>{{ application.applicant.first_name }} {{ application.applicant.last_name }}</h5>
+                                        <p><strong>Email:</strong> {{ application.applicant.email }}</p>
+                                        <p><strong>Applied:</strong> {{ application.applied_at|date:"F d, Y g:i A" }}</p>
+                                        
+                                        <h6>Cover Letter:</h6>
+                                        <p class="text-muted">{{ application.cover_letter|linebreaks }}</p>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        {% if application.resume %}
+                                            <a href="{{ application.resume.url }}" target="_blank" class="btn btn-primary">
+                                                📄 Download Resume
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted">No resume uploaded</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h4>No Applications Yet</h4>
+                <p>No one has applied for this job yet. Applications will appear here when they are submitted.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

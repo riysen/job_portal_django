@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <!-- Job Details Card -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>{{ job.title }}</h4>
+                <h6 class="text-muted">{{ job.company_name }}</h6>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p>{{ job.description|truncatewords:50 }}</p>
+            </div>
+        </div>
+
+        <!-- Application Form Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Apply for this Job</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-success">Submit Application</button>
+                        <a href="{% url 'job_detail' job.pk %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Application Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li>✅ Upload your latest resume</li>
+                    <li>✅ Write a personalized cover letter</li>
+                    <li>✅ Highlight relevant experience</li>
+                    <li>✅ Check your contact information</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Applicant Dashboard</h2>
+        <p>Welcome, {{ user.first_name }}! You are logged in as an Applicant.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5>Browse Jobs</h5>
+                        <p>Find and apply for jobs</p>
+                        <a href="{% url 'job_list' %}" class="btn btn-primary">Browse Jobs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5>My Applications</h5>
+                        <p>View your job applications</p>
+                        <a href="{% url 'my_applications' %}" class="btn btn-success">View Applications</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
