@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pkl
+
+# Django specific
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+
+# Environment variables
+.env
+.env.*
+
+# Django Migrations
+*/migrations/
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Static and media files
+/staticfiles/
+/media/
+/mediafiles/
+
+# Virtual Environment
+venv/
+env/
+job_portal_env/
+*.egg-info/
+
+# IDE files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Test output
+test_output/
